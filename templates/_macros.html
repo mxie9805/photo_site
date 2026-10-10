@@ -1,0 +1,23 @@
+{# Text in both languages. Only one is visible at a time (see style.css). #}
+{% macro t(en, zh='') -%}
+{% if zh and zh != en %}<span class="en">{{ en }}</span><span class="zh">{{ zh }}</span>{% else %}{{ en }}{% endif %}
+{%- endmacro %}
+
+{% macro srcset(photo, root) -%}
+{% for s in photo.sources %}{{ root }}img/{{ s.file }} {{ s.width }}w{% if not loop.last %}, {% endif %}{% endfor %}
+{%- endmacro %}
+
+{% macro img(photo, root, sizes, lazy=true) -%}
+<img src="{{ root }}img/{{ photo.sources[0].file }}" srcset="{{ srcset(photo, root) }}" sizes="{{ sizes }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.title }}"{% if lazy %} loading="lazy"{% endif %} decoding="async">
+{%- endmacro %}
+
+{# "Bryce Canyon, Utah · 2025" — whichever parts exist. #}
+{% macro where(photo) -%}
+{% if photo.place %}{{ t(photo.place, photo.place_zh) }}{% endif %}{% if photo.place and photo.year %} · {% endif %}{{ photo.year }}
+{%- endmacro %}
+
+{# "X-Pro3 · 35mm · f/2.8 · 1/500s · ISO 400 · Classic Neg" — whichever parts exist. #}
+{% macro exif_line(photo) -%}
+{% set parts = [photo.camera, photo.focal_length, photo.aperture, photo.shutter, ('ISO ' ~ photo.iso) if photo.iso else '', photo.film] | select | list %}
+{{ parts | join(' · ') }}
+{%- endmacro %}

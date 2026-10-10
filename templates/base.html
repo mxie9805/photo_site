@@ -1,0 +1,47 @@
+{% from "_macros.html" import t %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ site.name }}{% endblock %}</title>
+<meta name="description" content="{{ site.description }}">
+<script>try{if(localStorage.getItem("lang")==="zh"){document.documentElement.classList.add("lang-zh");document.documentElement.lang="zh-CN"}}catch(e){}</script>
+<link rel="stylesheet" href="{{ root }}static/style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <a class="brand" href="{{ root }}index.html">{{ t(site.brand, site.brand_zh) }}</a>
+  <div class="top-right">
+    <nav aria-label="Main">
+      <a href="{{ root }}series.html"{% if page == 'series' %} aria-current="page"{% endif %}>{{ t('Series', '系列') }}</a>
+      <a href="{{ root }}photos.html"{% if page == 'photos' %} aria-current="page"{% endif %}>{{ t('All photos', '全部照片') }}</a>
+      <a href="{{ root }}about.html"{% if page == 'about' %} aria-current="page"{% endif %}>{{ t('About', '关于') }}</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-lang="zh">中文</button>
+    </div>
+  </div>
+</header>
+
+<main>
+{% block main %}{% endblock %}
+</main>
+
+<footer class="foot">
+  <span>© {{ site.year }} {{ site.name }}</span>
+  <span>
+    {%- if site.links.instagram %}<a href="{{ site.links.instagram }}" rel="me noopener">Instagram</a>{% endif %}
+    {%- if site.links.instagram and site.links.email %} · {% endif %}
+    {%- if site.links.email %}<a href="mailto:{{ site.links.email }}">{{ site.links.email }}</a>{% endif -%}
+  </span>
+</footer>
+
+</div>
+<script src="{{ root }}static/site.js"></script>
+</body>
+</html>

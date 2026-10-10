@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "_macros.html" import t, img %}
+{% block title %}All photos · {{ site.name }}{% endblock %}
+{% block main %}
+
+<div class="page">
+  <div class="page-head">
+    <h1>{{ t('All photos', '全部照片') }}</h1>
+    <span class="mono muted"><span id="shown">{{ photos | length }}</span> / {{ photos | length }}</span>
+  </div>
+
+  {% if series or places %}
+  <div class="filters">
+    {% if series %}
+    <div class="filter" role="group" aria-label="Series">
+      <span class="filter-name">{{ t('Series', '系列') }}</span>
+      <button type="button" class="chip" data-group="series" data-value="" aria-pressed="true">{{ t('All', '全部') }}</button>
+      {% for s in series %}
+      <button type="button" class="chip" data-group="series" data-value="{{ s.slug }}" aria-pressed="false">{{ t(s.name, s.name_zh) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if places %}
+    <div class="filter" role="group" aria-label="Place">
+      <span class="filter-name">{{ t('Place', '地点') }}</span>
+      <button type="button" class="chip" data-group="place" data-value="" aria-pressed="true">{{ t('All', '全部') }}</button>
+      {% for p in places %}
+      <button type="button" class="chip" data-group="place" data-value="{{ p.slug }}" aria-pressed="false">{{ t(p.name, p.name_zh) }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <p id="empty" class="empty" hidden>{{ t('No photos for this combination yet. Try another series or place.', '这个组合下还没有照片，换一个系列或地点试试。') }}</p>
+
+  <div class="masonry{% if photos | length < 8 %} few{% endif %}" id="grid">
+    {% for p in photos %}
+    <a class="tile" href="p/{{ p.slug }}.html" data-series="{{ p.series }}" data-place="{{ p.place_slug }}">
+      {{- img(p, root, '(min-width: 1100px) 23vw, (min-width: 640px) 46vw, 94vw', lazy=(loop.index > 4)) -}}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

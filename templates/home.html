@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_macros.html" import t, img, srcset, where, exif_line %}
+{% block title %}{{ site.name }} · Photography{% endblock %}
+{% block main %}
+
+{% if featured %}
+<section class="hero" aria-label="Featured photo">
+  <a id="hero-link" class="hero-frame" href="p/{{ featured[0].slug }}.html">
+    <img id="hero-img" alt="" sizes="(min-width: 1600px) 1504px, 94vw" decoding="async">
+    <noscript>{{ img(featured[0], root, '94vw', lazy=false) }}</noscript>
+  </a>
+  {# One caption per featured photo; the script shows a random one on each visit. #}
+  {% for f in featured %}
+  <div class="hero-caption" data-href="p/{{ f.slug }}.html" data-src="img/{{ f.sources[-1].file }}" data-srcset="{{ srcset(f, root) }}" data-alt="{{ f.title }}"{% if not loop.first %} hidden{% endif %}>
+    <div class="hero-what">
+      <span class="hero-title">{{ t(f.title, f.title_zh) }}</span>
+      <span class="muted">{{ where(f) }}</span>
+    </div>
+    <div class="hero-meta">
+      <span class="mono muted">{{ exif_line(f) }}</span>
+      {% if featured | length > 1 %}<button type="button" class="linklike hero-shuffle">{{ t('Another one', '换一张') }}</button>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if series %}
+<section class="block" aria-label="Series">
+  <div class="block-head">
+    <h2>{{ t('Series', '系列') }}</h2>
+    <a href="photos.html">{{ t('All photos', '全部照片') }} · {{ photos | length }} →</a>
+  </div>
+  <div class="cards">
+    {% for s in series %}
+    <a class="card" href="photos.html#series={{ s.slug }}">
+      <div class="card-cover">{{ img(s.cover, root, '(min-width: 1100px) 31vw, (min-width: 720px) 46vw, 94vw') }}</div>
+      <div class="card-label">
+        <span class="card-name">{{ t(s.name, s.name_zh) }}</span>
+        <span class="mono muted">{{ s.count }} {{ t('photos', '张') }}{% if s.years %} · {{ s.years }}{% endif %}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

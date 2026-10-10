@@ -1,0 +1,36 @@
+# Site settings. Edit the text between the quotes, then publish.
+# Anything ending in _zh is the Chinese version; leave it "" to reuse the English.
+
+name       = "Michael"
+brand      = "MICHAEL · PHOTOGRAPHY"
+brand_zh   = "MICHAEL · 摄影"
+description = "Photographs by Michael."
+
+[links]
+instagram = ""          # full link, e.g. "https://instagram.com/yourname"
+email     = ""          # e.g. "you@example.com"
+
+[about]
+portrait  = ""          # a file name inside photos/, or "" for no portrait
+lead      = "[One or two lines: who you are and what you photograph.]"
+lead_zh   = "[一两句话：你是谁，拍什么。]"
+body      = "[A longer paragraph: how you started, what you care about, why this site exists.]"
+body_zh   = "[长一点的一段：怎么开始拍照的，在意什么，为什么做这个网站。]"
+gear      = ["[Camera or lens, one per line]"]
+rights    = "All photographs © Michael. Please ask before using them."
+rights_zh = "所有照片版权归 Michael 所有，使用前请先联系。"
+
+# One block per series. "slug" is the short id you type in photos.csv.
+# "cover" is optional: a file name inside photos/. Blank = newest photo in the series.
+
+[[series]]
+slug    = "canyon"
+name    = "Canyon"
+name_zh = "峡谷"
+cover   = ""
+
+[[series]]
+slug    = "ocean"
+name    = "Ocean"
+name_zh = "海"
+cover   = ""

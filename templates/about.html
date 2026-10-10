@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_macros.html" import t, img %}
+{% block title %}About · {{ site.name }}{% endblock %}
+{% block main %}
+{% set a = site.about %}
+
+<div class="page">
+  <div class="page-head">
+    <h1>{{ t('About', '关于') }}</h1>
+  </div>
+
+  <div class="about">
+    {% if a.portrait_photo %}
+    <div class="about-portrait">{{ img(a.portrait_photo, root, '(min-width: 900px) 460px, 94vw', lazy=false) }}</div>
+    {% endif %}
+
+    <div class="about-text">
+      {% if a.lead %}<p class="about-lead">{{ t(a.lead, a.lead_zh) }}</p>{% endif %}
+      {% if a.body %}<p class="about-body">{{ t(a.body, a.body_zh) }}</p>{% endif %}
+
+      {% if a.gear %}
+      <section>
+        <h2>{{ t('Gear', '器材') }}</h2>
+        <ul class="mono plain">{% for item in a.gear %}<li>{{ item }}</li>{% endfor %}</ul>
+      </section>
+      {% endif %}
+
+      {% if site.links.email or site.links.instagram %}
+      <section>
+        <h2>{{ t('Contact', '联系') }}</h2>
+        <ul class="mono plain">
+          {% if site.links.email %}<li><a href="mailto:{{ site.links.email }}">{{ site.links.email }}</a></li>{% endif %}
+          {% if site.links.instagram %}<li><a href="{{ site.links.instagram }}" rel="me noopener">Instagram</a></li>{% endif %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if a.rights %}
+      <section>
+        <h2>{{ t('Image use', '图片使用') }}</h2>
+        <p>{{ t(a.rights, a.rights_zh) }}</p>
+      </section>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

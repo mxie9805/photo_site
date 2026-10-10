@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_macros.html" import t, img %}
+{% block title %}Series · {{ site.name }}{% endblock %}
+{% block main %}
+
+<div class="page">
+  <div class="page-head">
+    <h1>{{ t('Series', '系列') }}</h1>
+    <span class="mono muted">{{ series | length }}</span>
+  </div>
+
+  {% if series %}
+  <div class="cards">
+    {% for s in series %}
+    <a class="card" href="photos.html#series={{ s.slug }}">
+      <div class="card-cover">{{ img(s.cover, root, '(min-width: 1100px) 31vw, (min-width: 720px) 46vw, 94vw', lazy=(loop.index > 3)) }}</div>
+      <div class="card-label">
+        <span class="card-name">{{ t(s.name, s.name_zh) }}</span>
+        <span class="mono muted">{{ s.count }} {{ t('photos', '张') }}{% if s.years %} · {{ s.years }}{% endif %}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">{{ t('No series yet.', '还没有系列。') }}</p>
+  {% endif %}
+</div>
+
+{% endblock %}

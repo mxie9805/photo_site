@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_macros.html" import t, img %}
+{% block title %}{{ photo.title }} · {{ site.name }}{% endblock %}
+{% block main %}
+
+<div class="photo-page">
+  <div class="photo-nav">
+    <a href="{{ root }}photos.html">← {{ t('All photos', '全部照片') }}</a>
+    <div class="photo-steps">
+      {% if photo.newer %}<a id="prev" href="{{ photo.newer }}.html">{{ t('Previous', '上一张') }}</a>{% else %}<span class="muted">{{ t('Previous', '上一张') }}</span>{% endif %}
+      {% if photo.older %}<a id="next" href="{{ photo.older }}.html">{{ t('Next', '下一张') }}</a>{% else %}<span class="muted">{{ t('Next', '下一张') }}</span>{% endif %}
+    </div>
+  </div>
+
+  <div class="photo-frame">
+    {{ img(photo, root, '(min-width: 1200px) 1120px, 94vw', lazy=false) }}
+  </div>
+
+  <div class="photo-info">
+    <div class="photo-text">
+      <h1>{{ t(photo.title, photo.title_zh) }}</h1>
+      {% if photo.note %}<p class="muted">{{ t(photo.note, photo.note_zh) }}</p>{% endif %}
+      <div class="photo-links">
+        {% if photo.series and series_names[photo.series] %}
+        <a href="{{ root }}photos.html#series={{ photo.series }}">{{ t('Series', '系列') }}: {{ t(series_names[photo.series].name, series_names[photo.series].name_zh) }}</a>
+        {% endif %}
+        {% if photo.place %}
+        <a href="{{ root }}photos.html#place={{ photo.place_slug }}">{{ t('Place', '地点') }}: {{ t(photo.place, photo.place_zh) }}</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% set rows = [
+      ('Camera', '相机', photo.camera),
+      ('Lens', '镜头', photo.lens),
+      ('Focal length', '焦距', photo.focal_length),
+      ('Aperture', '光圈', photo.aperture),
+      ('Shutter', '快门', photo.shutter),
+      ('ISO', 'ISO', photo.iso),
+      ('Film', '胶片 / 模拟', photo.film),
+      ('Taken', '拍摄时间', photo.date),
+    ] | selectattr(2) | list %}
+    {% if rows %}
+    <dl class="exif mono">
+      {% for en, zh, value in rows %}
+      <dt>{{ t(en, zh) }}</dt><dd>{{ value }}</dd>
+      {% endfor %}
+    </dl>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
